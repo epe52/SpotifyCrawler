@@ -6,8 +6,6 @@ import Dropdown from 'react-bootstrap/Dropdown';
 const SearchResults = ({ results, searchType }) => {
   const type = `${searchType.toLowerCase()}s`;
   const items = results[type]?.items;
-  // console.log('Results GEGE', results[type]?.items);
-  // TO-DO: show more info from results
   return (
     <>
       {items?.map((item) => (
