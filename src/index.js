@@ -6,12 +6,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
 const App = () => {
-  const [accessToken, setToken] = useState('');
+  const [loading, setLoading] = useState(false);
   const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 
   // Spotify token
   useEffect(() => {
+    setLoading(true);
     axios({
       method: 'post',
       url: 'https://accounts.spotify.com/api/token',
@@ -27,17 +28,21 @@ const App = () => {
     })
       .then((response) => {
         console.log('Got the token');
-        setToken(response.data.access_token);
+        axios.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${response.data.access_token}`;
+        setLoading(false);
       })
       .catch((error) => {
         console.log('Error', error);
+        setLoading(false);
       });
   }, []);
 
   return (
     <>
-      {accessToken === '' ? 'Waiting for token from Spotify' : ''}
-      {accessToken !== '' && (
+      {loading ? 'Waiting for token from Spotify' : ''}
+      {!loading && (
         <div>
           <h1>Spotify Crawler</h1>
           <p>
@@ -49,7 +54,7 @@ const App = () => {
           <ul>
             <li>Search from Spotify</li>
           </ul>
-          <SearchFromSpotify accessToken={accessToken} />
+          <SearchFromSpotify />
         </div>
       )}
     </>

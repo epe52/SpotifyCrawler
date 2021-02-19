@@ -1,63 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
+import spotifyAPI from '../spotifyAPI/spotifyAPI';
+
+const searchTypes = {
+  Album: 'album',
+  Artist: 'artist',
+  Playlist: 'playlist',
+  Track: 'track',
+  Show: 'show',
+  Episode: 'episode',
+};
 
 const SearchResults = ({ results, searchType }) => {
-  const type = `${searchType.toLowerCase()}s`;
+  const type = `${searchTypes[searchType]}s`;
   const items = results[type]?.items;
   return (
     <>
       {items?.map((item) => (
-        <li key={item?.name}>{item?.name}</li>
+        <li key={item?.id}>{item?.name}</li>
       ))}
     </>
   );
 };
 
-const SearchFromSpotify = ({ accessToken }) => {
+const SearchFromSpotify = () => {
   const [search, setSearch] = useState([]);
-  const [searchType, setSearchType] = useState('artist');
+  const [searchType, setSearchType] = useState('Artist');
   const [searchResult, setSearchResult] = useState([]);
   const [showResultText, setResultText] = useState(false);
-
-  const url = 'https://api.spotify.com/v1/search';
   const limit = 10;
-  const searchTypes = [
-    'Album',
-    'Artist',
-    'Playlist',
-    'Track',
-    'Show',
-    'Episode',
-  ];
 
-  // When search button is pressed
-  const searchFromSpotify = () => {
+  const searchFromSpotify = async () => {
     setResultText(true);
-    axios
-      .get(
-        `${url}?q=${search}&type=${searchType.toLowerCase()}&limit=${limit}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      )
-      .then((response) => {
-        console.log('Got the artist data', response.data);
-        setSearchResult(response.data);
-      })
-      .catch((error) => {
-        console.log('Error', error);
-      });
+    try {
+      const resp = await spotifyAPI.getSearchResults(
+        search,
+        searchTypes[searchType],
+        limit,
+      );
+      setSearchResult(resp);
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
-  // When content of form is changed
   const handleSearchChange = (event) => setSearch(event.target.value);
 
-  // Item selected from dropdown
-  const dropDownSelect = (e) => setSearchType(e.toLowerCase());
+  const dropDownSelect = (e) => {
+    console.log('e', e);
+    setSearchType(e);
+  };
 
   const searchButtonClicked = (e) => {
     e.preventDefault();
@@ -77,7 +70,7 @@ const SearchFromSpotify = ({ accessToken }) => {
               variant="secondary"
               onSelect={dropDownSelect}
             >
-              {searchTypes.map((type) => (
+              {Object.keys(searchTypes).map((type) => (
                 <Dropdown.Item key={type} eventKey={type}>
                   {type}
                 </Dropdown.Item>
