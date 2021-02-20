@@ -1,7 +1,12 @@
 import { useState } from 'react';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import Dropdown from 'react-bootstrap/Dropdown';
 import spotifyAPI from '../spotifyAPI/spotifyAPI';
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 const searchTypes = {
   Album: 'album',
@@ -11,6 +16,19 @@ const searchTypes = {
   Show: 'show',
   Episode: 'episode',
 };
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  textField: {
+    margin: theme.spacing(1),
+  },
+}));
 
 const SearchResults = ({ results, searchType }) => {
   const type = `${searchTypes[searchType]}s`;
@@ -30,6 +48,7 @@ const SearchFromSpotify = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [showResultText, setResultText] = useState(false);
   const limit = 10;
+  const classes = useStyles();
 
   const searchFromSpotify = async () => {
     setResultText(true);
@@ -47,10 +66,7 @@ const SearchFromSpotify = () => {
 
   const handleSearchChange = (event) => setSearch(event.target.value);
 
-  const dropDownSelect = (e) => {
-    console.log('e', e);
-    setSearchType(e);
-  };
+  const dropDownSelect = (e) => setSearchType(e.target.value);
 
   const searchButtonClicked = (e) => {
     e.preventDefault();
@@ -61,26 +77,38 @@ const SearchFromSpotify = () => {
     <div>
       <h2>Search from Spotify</h2>
       <div>
-        <form>
-          <div>
-            <DropdownButton
-              alignRight
-              title="Change search type"
-              id="dropdown-menu-align-right"
-              variant="secondary"
-              onSelect={dropDownSelect}
+        <div>
+          <FormControl className={classes.formControl}>
+            <InputLabel id="type-select-label">Search type</InputLabel>
+            <Select
+              labelId="type-select-label"
+              id="type-select"
+              value={searchType}
+              onChange={dropDownSelect}
             >
               {Object.keys(searchTypes).map((type) => (
-                <Dropdown.Item key={type} eventKey={type}>
+                <MenuItem key={type} value={type}>
                   {type}
-                </Dropdown.Item>
+                </MenuItem>
               ))}
-            </DropdownButton>
-            <p>{`Selected search type is "${searchType}"`}</p>
-            <input value={search} onChange={handleSearchChange} />
-            <button onClick={searchButtonClicked}>Search</button>
-          </div>
-        </form>
+            </Select>
+          </FormControl>
+          <TextField
+            className={classes.textField}
+            id="outlined-basic"
+            variant="outlined"
+            size="small"
+            value={search}
+            onChange={handleSearchChange}
+          />
+          <Button
+            variant="outlined"
+            className={classes.button}
+            onClick={searchButtonClicked}
+          >
+            Search
+          </Button>
+        </div>
       </div>
       <p>{showResultText ? 'Top 10 results:' : ''}</p>
       <ul>
