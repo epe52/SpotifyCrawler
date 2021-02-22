@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import spotifyAPI from '../spotifyAPI/spotifyAPI';
+import SearchResults from '../component/SearchResults';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -30,28 +31,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchResults = ({ results, searchType }) => {
-  const type = `${searchTypes[searchType]}s`;
-  const items = results[type]?.items;
-  return (
-    <>
-      {items?.map((item) => (
-        <li key={item?.id}>{item?.name}</li>
-      ))}
-    </>
-  );
-};
-
 const SearchFromSpotify = () => {
   const [search, setSearch] = useState([]);
   const [searchType, setSearchType] = useState('Artist');
   const [searchResult, setSearchResult] = useState([]);
-  const [showResultText, setResultText] = useState(false);
   const limit = 10;
   const classes = useStyles();
 
   const searchFromSpotify = async () => {
-    setResultText(true);
     try {
       const resp = await spotifyAPI.getSearchResults(
         search,
@@ -93,24 +80,26 @@ const SearchFromSpotify = () => {
               ))}
             </Select>
           </FormControl>
-          <TextField
-            className={classes.textField}
-            id="outlined-basic"
-            variant="outlined"
-            size="small"
-            value={search}
-            onChange={handleSearchChange}
-          />
-          <Button
-            variant="outlined"
-            className={classes.button}
-            onClick={searchButtonClicked}
-          >
-            Search
-          </Button>
+          <div>
+            <TextField
+              className={classes.textField}
+              id="outlined-basic"
+              variant="outlined"
+              size="small"
+              value={search}
+              onChange={handleSearchChange}
+            />
+            <Button
+              variant="outlined"
+              className={classes.button}
+              onClick={searchButtonClicked}
+            >
+              Search
+            </Button>
+          </div>
         </div>
       </div>
-      <p>{showResultText ? 'Top 10 results:' : ''}</p>
+      <p>{!searchResult ? 'Up to 10 results:' : ''}</p>
       <ul>
         <SearchResults results={searchResult} searchType={searchType} />
       </ul>
