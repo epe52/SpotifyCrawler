@@ -101,7 +101,12 @@ const SearchFromSpotify = () => {
       </div>
       <p>{!searchResult ? 'Up to 10 results:' : ''}</p>
       <ul>
-        <SearchResults results={searchResult} searchType={searchType} />
+        <SearchResults
+          results={searchResult}
+          searchType={searchType}
+          searchTypes={searchTypes}
+          style={useStyles}
+        />
       </ul>
     </div>
   );

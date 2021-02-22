@@ -1,25 +1,9 @@
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
-const searchTypes = {
-  Album: 'album',
-  Artist: 'artist',
-  Playlist: 'playlist',
-  Track: 'track',
-  Show: 'show',
-  Episode: 'episode',
-};
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    margin: theme.spacing(1),
-  },
-}));
-
-const SearchResults = ({ results, searchType }) => {
+const SearchResults = ({ results, searchType, searchTypes, style }) => {
   const type = `${searchTypes[searchType]}s`;
   const items = results[type]?.items;
-  const classes = useStyles();
+  const classes = style();
 
   const playAudio = (e) => {
     const elem = e.target.firstChild.classList.value;
