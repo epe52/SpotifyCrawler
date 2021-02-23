@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import SearchFromSpotify from './component/SearchFromSpotify';
 import axios from 'axios';
+import Container from '@material-ui/core/Container';
 import './index.css';
 
 const App = () => {
@@ -42,7 +43,7 @@ const App = () => {
     <>
       {loading ? 'Waiting for token from Spotify' : ''}
       {!loading && (
-        <div>
+        <Container maxWidth="md">
           <h1>Spotify Crawler</h1>
           <p>
             This is a work in progress project that aims to have functionality
@@ -54,7 +55,7 @@ const App = () => {
             <li>Search from Spotify</li>
           </ul>
           <SearchFromSpotify />
-        </div>
+        </Container>
       )}
     </>
   );

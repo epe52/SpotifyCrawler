@@ -1,44 +1,21 @@
-import Button from '@material-ui/core/Button';
+import React from 'react';
+import TrackTable from '../component/TrackTable';
 
-const SearchResults = ({ results, searchType, searchTypes, style }) => {
+const SearchResults = ({ results, searchType, searchTypes }) => {
   const type = `${searchTypes[searchType]}s`;
   const items = results[type]?.items;
-  const classes = style();
-
-  const playAudio = (e) => {
-    const elem = e.target.firstChild.classList.value;
-    const audioEl = document.getElementsByClassName(elem)[0];
-    try {
-      audioEl?.paused ? audioEl?.play() : audioEl?.pause();
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <>
-      {items?.length > 0 && items[0] !== null
-        ? items?.map((item) => (
-            <li key={item?.id}>
-              {item?.name}
-              {searchType === 'Track' && item?.preview_url !== null ? (
-                <Button
-                  className={classes.button}
-                  variant="outlined"
-                  size="small"
-                  onClick={playAudio}
-                >
-                  <audio className={`audio:${item?.id}`}>
-                    <source src={item?.preview_url}></source>
-                  </audio>
-                  Play
-                </Button>
-              ) : null}
-            </li>
-          ))
-        : items?.length !== undefined
-        ? 'No results'
-        : null}
+      {items?.length > 0 && items[0] !== null ? (
+        searchType === 'Track' ? (
+          <TrackTable items={items} />
+        ) : (
+          items?.map((item) => <p key={item?.id}>{item?.name}</p>)
+        )
+      ) : items?.length !== undefined ? (
+        'No results'
+      ) : null}
     </>
   );
 };
