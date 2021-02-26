@@ -1,4 +1,5 @@
 import React from 'react';
+import ArtistTable from '../component/ArtistTable';
 import TrackTable from '../component/TrackTable';
 
 const SearchResults = ({ results, searchType, searchTypes }) => {
@@ -8,7 +9,9 @@ const SearchResults = ({ results, searchType, searchTypes }) => {
   return (
     <>
       {items?.length > 0 && items[0] !== null ? (
-        searchType === 'Track' ? (
+        searchType === 'Artist' ? (
+          <ArtistTable items={items} />
+        ) : searchType === 'Track' ? (
           <TrackTable items={items} />
         ) : (
           items?.map((item) => <p key={item?.id}>{item?.name}</p>)

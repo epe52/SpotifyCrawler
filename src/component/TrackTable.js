@@ -46,7 +46,7 @@ const TrackTable = ({ items }) => {
       <Table className={classes.table} aria-label="track-table">
         <TableHead>
           <TableRow>
-            <TableCell className={classes.topCell}>Artist</TableCell>
+            <TableCell className={classes.topCell}>Song artists</TableCell>
             <TableCell className={classes.topCell}>Song</TableCell>
             <TableCell className={classes.topCell}>Album</TableCell>
             <TableCell align="right" className={classes.topCell}>
@@ -56,18 +56,20 @@ const TrackTable = ({ items }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {items.map((track) => (
-            <TableRow key={track.id}>
+          {items?.map((track) => (
+            <TableRow key={track?.id}>
               <TableCell className={classes.cell}>
-                {track.artists[0].name}
+                {track?.artists?.map((artist) => artist.name).join(', ')}
               </TableCell>
-              <TableCell className={classes.cell}>{track.name}</TableCell>
-              <TableCell className={classes.cell}>{track.album.name}</TableCell>
+              <TableCell className={classes.cell}>{track?.name}</TableCell>
+              <TableCell className={classes.cell}>
+                {track?.album.name}
+              </TableCell>
               <TableCell align="right" className={classes.cell}>
-                <audio className={`audio:${track.id}`}>
-                  <source src={track.preview_url}></source>
+                <audio className={`audio:${track?.id}`}>
+                  <source src={track?.preview_url}></source>
                 </audio>
-                {track.preview_url !== null ? (
+                {track?.preview_url !== null ? (
                   <IconButton
                     aria-label="play/pause"
                     onClick={playAudio(`audio:${track?.id}`)}
@@ -80,7 +82,7 @@ const TrackTable = ({ items }) => {
                 <Avatar
                   variant="rounded"
                   alt="Album cover"
-                  src={track.album.images[1].url}
+                  src={track?.album.images[1].url}
                 />
               </TableCell>
             </TableRow>
