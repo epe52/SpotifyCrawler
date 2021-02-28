@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import SearchFromSpotify from './component/SearchFromSpotify';
 import axios from 'axios';
 import Container from '@material-ui/core/Container';
-import './index.css';
+import './styles/main.scss';
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -52,7 +52,14 @@ const App = () => {
           </p>
           <h2>Current functionality</h2>
           <ul>
-            <li>Search from Spotify</li>
+            <li>
+              Search albums, artists, playlists or tracks from Spotify and
+              display top 10 results.
+            </li>
+            <li>
+              Display information about artists and tracks in custom tables.
+            </li>
+            <li>Play song previews.</li>
           </ul>
           <SearchFromSpotify />
         </Container>

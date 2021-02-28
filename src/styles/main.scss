@@ -1,0 +1,73 @@
+@import './variables.scss';
+@import './mixins.scss';
+
+body {
+  margin: 0;
+  font-family: $font-body;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: $background-green;
+}
+
+code {
+  font-family: $font-code;
+}
+
+#type-select-label {
+  color: black;
+}
+
+.table {
+  border: 3px $main-border;
+  background-color: $background-green;
+}
+
+.row {
+  border-bottom: 1px $main-border;
+}
+
+.cell {
+  border-bottom: none;
+  text-transform: capitalize;
+}
+
+.dropdownCell {
+  padding-bottom: 0;
+  padding-top: 0;
+  border-bottom: 1px $main-border;
+}
+
+.topCell {
+  font-weight: bold;
+  border-bottom: 3px $main-border;
+}
+
+.playIcon {
+  height: 18px;
+  width: 18px;
+}
+
+.paper {
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+  max-width: 300px;
+  @include spacing(1);
+  border: 1px $main-border;
+  background: transparent;
+}
+
+.formControl {
+  @include spacing(1);
+  min-width: 120px;
+}
+
+.input {
+  margin-left: 8px;
+  flex: 1px;
+}
+
+.iconButton {
+  padding: 10px;
+}

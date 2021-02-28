@@ -1,0 +1,3 @@
+@mixin spacing($factor) {
+  margin: 8px * $factor;
+}
