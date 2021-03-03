@@ -47,6 +47,11 @@ code {
   width: 18px;
 }
 
+.albumTrackBox {
+  min-width: 120px;
+  max-width: max-content;
+}
+
 .paper {
   padding: 2px 4px;
   display: flex;

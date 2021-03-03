@@ -1,4 +1,5 @@
 import React from 'react';
+import AlbumTable from '../component/AlbumTable';
 import ArtistTable from '../component/ArtistTable';
 import TrackTable from '../component/TrackTable';
 
@@ -9,7 +10,9 @@ const SearchResults = ({ results, searchType, searchTypes }) => {
   return (
     <>
       {items?.length > 0 && items[0] !== null ? (
-        searchType === 'Artist' ? (
+        searchType === 'Album' ? (
+          <AlbumTable items={items} />
+        ) : searchType === 'Artist' ? (
           <ArtistTable items={items} />
         ) : searchType === 'Track' ? (
           <TrackTable items={items} />

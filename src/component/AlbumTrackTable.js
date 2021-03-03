@@ -8,10 +8,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Avatar from '@material-ui/core/Avatar';
 import { StylesProvider } from '@material-ui/core/styles';
 
-const TrackTable = ({ items }) => {
+const AlbumTrackTable = ({ items }) => {
   const playAudio = (elemClassName) => () => {
     const audioEl = document.getElementsByClassName(elemClassName)[0];
     try {
@@ -27,24 +26,17 @@ const TrackTable = ({ items }) => {
         <Table className={'table'} aria-label="track-table">
           <TableHead>
             <TableRow>
+              <TableCell className={'topCell'}>#</TableCell>
               <TableCell className={'topCell'}>Title</TableCell>
-              <TableCell className={'topCell'}>Artist</TableCell>
-              <TableCell className={'topCell'}>Album</TableCell>
-              <TableCell align="right" className={'topCell'}>
-                Play Preview
-              </TableCell>
-              <TableCell className={'topCell'}>Image</TableCell>
+              <TableCell className={'topCell'}>Play Preview</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {items?.map((track) => (
               <TableRow key={track?.id} className={'row'}>
+                <TableCell className={'cell'}>{track?.track_number}</TableCell>
                 <TableCell className={'cell'}>{track?.name}</TableCell>
                 <TableCell className={'cell'}>
-                  {track?.artists?.map((artist) => artist?.name).join(', ')}
-                </TableCell>
-                <TableCell className={'cell'}>{track?.album?.name}</TableCell>
-                <TableCell align="right" className={'cell'}>
                   <audio className={`audio:${track?.id}`}>
                     <source src={track?.preview_url}></source>
                   </audio>
@@ -57,13 +49,6 @@ const TrackTable = ({ items }) => {
                     </IconButton>
                   ) : null}
                 </TableCell>
-                <TableCell align="right" className={'cell'}>
-                  <Avatar
-                    variant="rounded"
-                    alt="Album cover"
-                    src={track?.album?.images[1]?.url}
-                  />
-                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -73,4 +58,4 @@ const TrackTable = ({ items }) => {
   );
 };
 
-export default TrackTable;
+export default AlbumTrackTable;

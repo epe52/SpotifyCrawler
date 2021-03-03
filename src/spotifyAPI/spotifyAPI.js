@@ -2,15 +2,15 @@ import axios from 'axios';
 
 const baseUrl = 'https://api.spotify.com/v1/';
 
+const getUserCountryCode = () => {
+  const request = axios.get(`https://ipapi.co/country_code/`);
+  return request.then((response) => response.data);
+};
+
 const getSearchResults = (search, type, limit) => {
   const request = axios.get(
     `${baseUrl}search?q=${search}&type=${type}&limit=${limit}`,
   );
-  return request.then((response) => response.data);
-};
-
-const getUserCountryCode = () => {
-  const request = axios.get(`https://ipapi.co/country_code/`);
   return request.then((response) => response.data);
 };
 
@@ -28,4 +28,11 @@ const getArtistTopTracks = async (id) => {
   }
 };
 
-export default { getSearchResults, getArtistTopTracks };
+const getAlbumTracks = (id, offset, limit) => {
+  const request = axios.get(
+    `${baseUrl}albums/${id}/tracks?offset=${offset}&limit=${limit}`,
+  );
+  return request.then((response) => response.data);
+};
+
+export default { getSearchResults, getArtistTopTracks, getAlbumTracks };
