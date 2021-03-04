@@ -7,9 +7,9 @@ const getUserCountryCode = () => {
   return request.then((response) => response.data);
 };
 
-const getSearchResults = (search, type, limit) => {
+const getAlbumTracks = (id, offset, limit) => {
   const request = axios.get(
-    `${baseUrl}search?q=${search}&type=${type}&limit=${limit}`,
+    `${baseUrl}albums/${id}/tracks?offset=${offset}&limit=${limit}`,
   );
   return request.then((response) => response.data);
 };
@@ -28,11 +28,21 @@ const getArtistTopTracks = async (id) => {
   }
 };
 
-const getAlbumTracks = (id, offset, limit) => {
+const getPlaylist = (playlistId) => {
+  const request = axios.get(`${baseUrl}playlists/${playlistId}`);
+  return request.then((response) => response.data);
+};
+
+const getSearchResults = (search, type, limit) => {
   const request = axios.get(
-    `${baseUrl}albums/${id}/tracks?offset=${offset}&limit=${limit}`,
+    `${baseUrl}search?q=${search}&type=${type}&limit=${limit}`,
   );
   return request.then((response) => response.data);
 };
 
-export default { getSearchResults, getArtistTopTracks, getAlbumTracks };
+export default {
+  getAlbumTracks,
+  getArtistTopTracks,
+  getPlaylist,
+  getSearchResults,
+};

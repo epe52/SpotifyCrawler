@@ -1,6 +1,7 @@
 import React from 'react';
 import AlbumTable from '../component/AlbumTable';
 import ArtistTable from '../component/ArtistTable';
+import PlaylistTable from '../component/PlaylistTable';
 import TrackTable from '../component/TrackTable';
 
 const SearchResults = ({ results, searchType, searchTypes }) => {
@@ -14,10 +15,10 @@ const SearchResults = ({ results, searchType, searchTypes }) => {
           <AlbumTable items={items} />
         ) : searchType === 'Artist' ? (
           <ArtistTable items={items} />
-        ) : searchType === 'Track' ? (
-          <TrackTable items={items} />
+        ) : searchType === 'Playlist' ? (
+          <PlaylistTable items={items} />
         ) : (
-          items?.map((item) => <p key={item?.id}>{item?.name}</p>)
+          <TrackTable items={items} />
         )
       ) : items?.length !== undefined ? (
         'No results'
