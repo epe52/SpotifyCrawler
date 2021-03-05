@@ -10,6 +10,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Collapse from '@material-ui/core/Collapse';
 import Box from '@material-ui/core/Box';
+import PlaylistTrackTable from '../component/PlaylistTrackTable';
 
 const PlaylistRow = ({ playlist }) => {
   const columns = 6;
@@ -31,9 +32,7 @@ const PlaylistRow = ({ playlist }) => {
             <IconButton
               aria-label="expand row"
               size="small"
-              onClick={() => {
-                setOpen(!open);
-              }}
+              onClick={() => setOpen(!open)}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
@@ -59,8 +58,9 @@ const PlaylistRow = ({ playlist }) => {
         <TableRow key={`2:${playlist?.id}`} className={'row'}>
           <TableCell className={'dropdownCell'} colSpan={columns}>
             <Collapse in={open} timeout="auto" unmountOnExit>
-              <Box margin={1} className={'albumTrackBox'}>
+              <Box margin={1}>
                 Playlist tracks
+                <PlaylistTrackTable items={playlistDetails} />
               </Box>
             </Collapse>
           </TableCell>
