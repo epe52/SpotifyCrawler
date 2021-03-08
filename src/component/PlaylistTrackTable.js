@@ -5,21 +5,22 @@ import { DataGrid } from '@material-ui/data-grid';
 
 const PlaylistTrackTable = ({ items }) => {
   const [rows, setRows] = useState([]);
-  const rowAmount = 5;
-  const tH = rowAmount * 85;
+  const columnsAmount = 5;
+  const tH = columnsAmount * 85;
   const tW = document.getElementsByClassName('MuiTableBody-root')[0]
     .offsetWidth;
+  const columnW = tW / columnsAmount;
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Track', width: tW / rowAmount },
-    { field: 'artists', headerName: 'Artist', width: tW / rowAmount },
-    { field: 'album', headerName: 'Album', width: tW / rowAmount },
+    { field: 'name', headerName: 'Track', width: columnW },
+    { field: 'artists', headerName: 'Artist', width: columnW },
+    { field: 'album', headerName: 'Album', width: columnW },
     {
       field: 'added_at',
       headerName: 'Added',
       sortable: false,
-      width: tW / rowAmount,
+      width: columnW,
     },
   ];
 

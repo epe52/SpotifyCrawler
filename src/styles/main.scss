@@ -68,6 +68,10 @@ code {
   min-width: 120px;
 }
 
+.accessButton {
+  @include spacing(1);
+}
+
 .input {
   margin-left: 8px;
   flex: 1px;

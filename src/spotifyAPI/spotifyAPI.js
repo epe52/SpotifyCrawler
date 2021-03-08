@@ -33,6 +33,11 @@ const getPlaylist = (playlistId) => {
   return request.then((response) => response.data);
 };
 
+const getUserTopArtists = () => {
+  const request = axios.get(`${baseUrl}me/top/artists`);
+  return request.then((response) => response.data);
+};
+
 const getSearchResults = (search, type, limit) => {
   const request = axios.get(
     `${baseUrl}search?q=${search}&type=${type}&limit=${limit}`,
@@ -44,5 +49,6 @@ export default {
   getAlbumTracks,
   getArtistTopTracks,
   getPlaylist,
+  getUserTopArtists,
   getSearchResults,
 };
