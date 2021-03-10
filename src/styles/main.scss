@@ -80,3 +80,16 @@ code {
 .iconButton {
   padding: 10px;
 }
+
+.card {
+  max-width: 150px;
+  border: 1px $main-border;
+}
+.cardMedia {
+  height: 150px;
+  width: 150px;
+  border-bottom: 1px $main-border;
+}
+.cardGrid {
+  flex-grow: 1;
+}

@@ -48,7 +48,7 @@ const SearchFromSpotify = () => {
   };
 
   return (
-    <StylesProvider injectFirst>
+    <StylesProvider>
       <div>
         <h2>Search from Spotify</h2>
         <div>
