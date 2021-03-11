@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 
 const UserInfo = ({ token }) => {
+  const limit = 20;
   const [userProfile, setUserProfile] = useState([]);
   const [userTopArtists, setUserTopArtists] = useState([]);
   const [value, setValue] = useState(6);
@@ -18,22 +19,22 @@ const UserInfo = ({ token }) => {
       .then((response) => setUserProfile(response))
       .catch((error) => console.log(error));
     spotifyAPI
-      .getUserTopArtists(value)
+      .getUserTopArtists(limit)
       .then((response) => setUserTopArtists(response))
       .catch((error) => console.log(error));
-  }, [value]);
+  }, []);
 
   const handleInputChange = (event) => {
     setValue(event.target.value === '' ? '' : Number(event.target.value));
   };
 
   const handleBlur = () => {
-    value < 0 ? setValue(0) : value > 20 ? setValue(20) : null;
+    value < 0 ? setValue(0) : value > limit ? setValue(limit) : null;
   };
 
   return (
     <>
-      <h2>Hello {userProfile.display_name}!</h2>
+      <h2>Hello {userProfile?.display_name}!</h2>
       <h3>{'Your top artists'}</h3>
       <Grid container spacing={1} direction="row" alignItems="flex-start">
         <Grid item>Artists to show:</Grid>
@@ -54,7 +55,11 @@ const UserInfo = ({ token }) => {
           />
         </Grid>
       </Grid>
-      <UserTopArtists userTopArtists={userTopArtists.items} />
+      <UserTopArtists
+        userTopArtists={userTopArtists?.items?.filter(
+          (item, index) => index < value,
+        )}
+      />
     </>
   );
 };

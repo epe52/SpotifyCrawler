@@ -93,3 +93,48 @@ code {
 .cardGrid {
   flex-grow: 1;
 }
+
+.trackPaper {
+  padding: 8px;
+  margin: 10px;
+  max-width: 350px;
+  border: 1px $main-border;
+}
+.trackCardMedia {
+  height: 100px;
+  width: 100px;
+}
+
+.trackCardInfo {
+  padding-left: 8px;
+}
+
+.trackCardPlayTypography {
+  height: 0;
+}
+.trackCardPlayButton {
+  margin-top: -60px;
+  margin-left: 3px;
+  height: 25px;
+  width: 25px;
+}
+.trackCardPlayIcon {
+  padding: 0;
+  border: 1px $main-border;
+  border-radius: 25px;
+  color: white;
+  background-color: black;
+}
+
+.trackCardMoreTypography {
+  margin: -5px;
+}
+.trackCardMoreButton {
+  padding: 2px;
+  height: 35px;
+  width: 35px;
+}
+.trackCardMoreIcon {
+  height: 23px;
+  width: 23px;
+}
