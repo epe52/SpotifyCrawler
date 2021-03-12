@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import spotifyAPI from '../spotifyAPI/spotifyAPI';
 import axios from 'axios';
+import UserRecommendations from '../component/UserRecommendations';
 import UserTopArtists from '../component/UserTopArtists';
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
@@ -35,6 +36,8 @@ const UserInfo = ({ token }) => {
   return (
     <>
       <h2>Hello {userProfile?.display_name}!</h2>
+      <h3>{'Your song recommendations'}</h3>
+      <UserRecommendations userTopArtists={userTopArtists?.items} />
       <h3>{'Your top artists'}</h3>
       <Grid container spacing={1} direction="row" alignItems="flex-start">
         <Grid item>Artists to show:</Grid>

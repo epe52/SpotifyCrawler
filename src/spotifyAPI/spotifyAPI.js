@@ -28,6 +28,11 @@ const getArtistTopTracks = async (id) => {
   }
 };
 
+const getAvailableGenreSeeds = () => {
+  const request = axios.get(`${baseUrl}recommendations/available-genre-seeds`);
+  return request.then((response) => response.data);
+};
+
 const getPlaylist = (playlistId) => {
   const request = axios.get(`${baseUrl}playlists/${playlistId}`);
   return request.then((response) => response.data);
@@ -43,6 +48,23 @@ const getUserProfile = () => {
   return request.then((response) => response.data);
 };
 
+const getUserRecommendations = async (seedArtists, seedGenres, limit) => {
+  try {
+    const market = await getUserCountryCode();
+    const request = axios.get(`${baseUrl}recommendations`, {
+      params: {
+        seed_artists: seedArtists,
+        seed_genres: seedGenres,
+        limit: limit,
+        market: market !== null ? market : 'ES',
+      },
+    });
+    return request.then((response) => response.data);
+  } catch (error) {
+    console.log('error', error);
+  }
+};
+
 const getSearchResults = (search, type, limit) => {
   const request = axios.get(
     `${baseUrl}search?q=${search}&type=${type}&limit=${limit}`,
@@ -53,8 +75,10 @@ const getSearchResults = (search, type, limit) => {
 export default {
   getAlbumTracks,
   getArtistTopTracks,
+  getAvailableGenreSeeds,
   getPlaylist,
   getUserTopArtists,
   getUserProfile,
+  getUserRecommendations,
   getSearchResults,
 };

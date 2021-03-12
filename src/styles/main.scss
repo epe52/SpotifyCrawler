@@ -94,10 +94,12 @@ code {
   flex-grow: 1;
 }
 
+/* ----- TRACK CARD ----- */
+
 .trackPaper {
   padding: 8px;
   margin: 10px;
-  max-width: 350px;
+  width: 350px;
   border: 1px $main-border;
 }
 .trackCardMedia {
@@ -126,15 +128,18 @@ code {
   background-color: black;
 }
 
-.trackCardMoreTypography {
+.trackCardMoreTypography,
+.trackCardAddTypography {
   margin: -5px;
 }
-.trackCardMoreButton {
+.trackCardMoreButton,
+.trackCardAddButton {
   padding: 2px;
   height: 35px;
   width: 35px;
 }
-.trackCardMoreIcon {
+.trackCardMoreIcon,
+.trackCardAddIcon {
   height: 23px;
   width: 23px;
 }
