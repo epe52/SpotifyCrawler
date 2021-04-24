@@ -6,7 +6,8 @@ body {
   font-family: $font-body;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: $background-green;
+  //background: $background-green;
+  background: $background-grey;
 }
 
 code {
@@ -94,7 +95,11 @@ code {
   flex-grow: 1;
 }
 
-/* ----- TRACK CARD ----- */
+/* ----- TRACK CARD/GRID ----- */
+
+.trackPage0 {
+  background: white;
+}
 
 .trackPaper {
   padding: 8px;

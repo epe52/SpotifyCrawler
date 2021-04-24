@@ -8,7 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 
 const UserInfo = ({ token }) => {
-  const limit = 20;
+  const showLimit = 20;
+  const artistLimit = 50;
   const [userProfile, setUserProfile] = useState([]);
   const [userTopArtists, setUserTopArtists] = useState([]);
   const [value, setValue] = useState(6);
@@ -20,7 +21,7 @@ const UserInfo = ({ token }) => {
       .then((response) => setUserProfile(response))
       .catch((error) => console.log(error));
     spotifyAPI
-      .getUserTopArtists(limit)
+      .getUserTopArtists(artistLimit)
       .then((response) => setUserTopArtists(response))
       .catch((error) => console.log(error));
   }, []);
@@ -30,7 +31,7 @@ const UserInfo = ({ token }) => {
   };
 
   const handleBlur = () => {
-    value < 0 ? setValue(0) : value > limit ? setValue(limit) : null;
+    value < 0 ? setValue(0) : value > showLimit ? setValue(showLimit) : null;
   };
 
   return (
