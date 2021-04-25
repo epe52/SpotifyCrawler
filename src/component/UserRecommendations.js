@@ -14,6 +14,8 @@ const UserRecommendations = ({ userTopArtists }) => {
   const recommendationLimit = 30;
   const artistSeeds = 4; // Max 5 total seeds
   const genreSeeds = 1;
+  const [userSavedTracks, setUserSavedTracks] = useState([]);
+  const [savedFormat, setSavedFormat] = useState(false);
 
   useEffect(() => {
     const seedData = {
@@ -30,7 +32,22 @@ const UserRecommendations = ({ userTopArtists }) => {
       });
     });
     setSeedInfo(seedData);
+    // Only after token has been set
+    userTopArtists != undefined
+      ? setUserSavedTracks(spotifyAPI.getUserSavedTracks())
+      : null;
   }, [userTopArtists]);
+
+  const formatUserSavedTracks = () => {
+    const tempAllUserTracks = [];
+    userSavedTracks?.map((trackArray) =>
+      trackArray?.map((trackDetails) =>
+        tempAllUserTracks.push(trackDetails?.track),
+      ),
+    );
+    setUserSavedTracks(tempAllUserTracks);
+    setSavedFormat(true);
+  };
 
   const getRecommendations = () => {
     const viableUserGenres = [];
@@ -107,6 +124,7 @@ const UserRecommendations = ({ userTopArtists }) => {
         onClick={() => {
           setShowTracks(!showTracks);
           getRecommendations();
+          !savedFormat ? formatUserSavedTracks() : null;
           previewSong.src = '';
         }}
       >
@@ -126,6 +144,10 @@ const UserRecommendations = ({ userTopArtists }) => {
           </Button>
           {showTracks ? (
             <div>
+              <p>
+                You have total of {userSavedTracks?.length} saved tracks. They
+                will be used for recommendations in the future.{' '}
+              </p>
               <p>
                 Selected seed artists and genres for recommendations randomly
                 based on your top artists.

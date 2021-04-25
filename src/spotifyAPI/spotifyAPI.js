@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const baseUrl = 'https://api.spotify.com/v1/';
+let userSavedTracks = [];
 
 const getUserCountryCode = () => {
   const request = axios.get(`https://ipapi.co/country_code/`);
@@ -36,6 +37,19 @@ const getAvailableGenreSeeds = () => {
 const getPlaylist = (playlistId) => {
   const request = axios.get(`${baseUrl}playlists/${playlistId}`);
   return request.then((response) => response.data);
+};
+
+const getUserSavedTracks = (nextUrl) => {
+  const limit = 50;
+  const url = !nextUrl
+    ? `${baseUrl}me/tracks?offset=0&limit=${limit}`
+    : nextUrl;
+  !nextUrl ? (userSavedTracks = []) : null;
+  axios.get(url).then((response) => {
+    userSavedTracks.push(response.data.items);
+    !response.data.next ? null : getUserSavedTracks(response.data.next);
+  });
+  return userSavedTracks;
 };
 
 const getUserTopArtists = (limit) => {
@@ -77,6 +91,7 @@ export default {
   getArtistTopTracks,
   getAvailableGenreSeeds,
   getPlaylist,
+  getUserSavedTracks,
   getUserTopArtists,
   getUserProfile,
   getUserRecommendations,

@@ -33,7 +33,8 @@ const App = () => {
     const redirect_uri = process.env.REACT_APP_SPOTIFY_REDIRECT_URI;
     const state = Math.random().toString(16).substr(2, 8);
     localStorage.setItem('stateKey', state);
-    const scope = 'user-read-private user-read-recently-played user-top-read';
+    const scope =
+      'user-read-private user-read-recently-played user-top-read user-library-read';
     const url = `https://accounts.spotify.com/authorize?response_type=token&client_id=${encodeURIComponent(
       clientId,
     )}&scope=${encodeURIComponent(scope)}&redirect_uri=${encodeURIComponent(
