@@ -91,14 +91,23 @@ code {
   width: 150px;
   border-bottom: 1px $main-border;
 }
-.cardGrid {
+.cardGrid,
+.topArtistCardGrid {
   flex-grow: 1;
 }
 
 /* ----- TRACK CARD/GRID ----- */
 
-.trackPage0 {
+[class*='trackPage0'] {
   background: white;
+}
+
+.trackGridPages {
+  @include spacing(1);
+}
+
+.trackGridPages > button {
+  border: 1px $main-border;
 }
 
 .trackPaper {

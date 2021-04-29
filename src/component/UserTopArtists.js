@@ -26,10 +26,15 @@ const UserTopArtists = ({ userTopArtists }) => {
       .catch((error) => console.log(error));
   };
 
+  const scrollToTracks = () => {
+    const elem = document.getElementsByClassName(`topArtistCardGrid`)[0];
+    window.scrollTo(0, elem.offsetTop + elem.offsetHeight);
+  };
+
   return (
     <>
       <Grid
-        className="cardGrid"
+        className="topArtistCardGrid"
         container
         spacing={1}
         direction="row"
@@ -44,6 +49,7 @@ const UserTopArtists = ({ userTopArtists }) => {
             sm={2}
             onClick={() => {
               artistTopTracks(artist?.id);
+              scrollToTracks();
               previewSong.src = '';
             }}
           >
@@ -75,7 +81,11 @@ const UserTopArtists = ({ userTopArtists }) => {
           >
             Hide artist top tracks
           </Button>
-          <TrackGrid tracks={topTracks?.tracks} previewSong={previewSong} />
+          <TrackGrid
+            tracks={topTracks?.tracks}
+            previewSong={previewSong}
+            gridID="UserTopArtists"
+          />
         </div>
       ) : (
         ''

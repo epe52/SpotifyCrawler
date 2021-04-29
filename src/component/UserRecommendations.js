@@ -11,7 +11,7 @@ const UserRecommendations = ({ userTopArtists }) => {
   const [genresUsedAsSeed, setGenresUsedAsSeed] = useState([]);
   const [artistsUsedAsSeed, setArtistsUsedAsSeed] = useState([]);
   const previewSong = new Audio();
-  const recommendationLimit = 30;
+  const recommendationLimit = 50;
   const artistSeeds = 4; // Max 5 total seeds
   const genreSeeds = 1;
   const [userSavedTracks, setUserSavedTracks] = useState([]);
@@ -149,8 +149,8 @@ const UserRecommendations = ({ userTopArtists }) => {
                 will be used for recommendations in the future.{' '}
               </p>
               <p>
-                Selected seed artists and genres for recommendations randomly
-                based on your top artists.
+                Selected seed artists and genres for recommendations are
+                randomly selected based on your top artists.
               </p>
               <p>
                 Artists used as seed for recommendation:{' '}
@@ -163,6 +163,7 @@ const UserRecommendations = ({ userTopArtists }) => {
               <TrackGrid
                 tracks={recommendations?.tracks}
                 previewSong={previewSong}
+                gridID="UserRecommendations"
               />
             </div>
           ) : (

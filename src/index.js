@@ -144,6 +144,8 @@ const App = () => {
                 in custom tables.
               </li>
               <li>Play song previews.</li>
+              <li>Get recommendations based on user top artists.</li>
+              <li>Get user top artists and play their top tracks.</li>
             </ul>
             {userToken !== '' ? <UserInfo token={userToken} /> : ''}
             <SearchFromSpotify />

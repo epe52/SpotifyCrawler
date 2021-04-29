@@ -11,13 +11,14 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
 import AddIcon from '@material-ui/icons/Add';
 
-const TrackGrid = ({ tracks, previewSong }) => {
+const TrackGrid = ({ tracks, previewSong, gridID }) => {
   const [displayTracks, setDisplayTracks] = useState([]);
   const [trackPageAmount, setTrackPageAmount] = useState([]);
   const [trackPages, setTrackPages] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const totalTracks = tracks.length;
   const tracksPerPage = 6;
+  const trackPagesToShow = 4;
 
   useEffect(() => {
     previewSong.volume = 0.6;
@@ -30,7 +31,8 @@ const TrackGrid = ({ tracks, previewSong }) => {
     } else {
       setDisplayTracks(tracks);
     }
-  }, []);
+    currentPage > 0 ? changeActivePageColor(0) : null;
+  }, [tracks]);
 
   const stopMusic = () => (previewSong.src = '');
 
@@ -50,14 +52,14 @@ const TrackGrid = ({ tracks, previewSong }) => {
 
   const changeActivePageColor = (page) => {
     document.getElementsByClassName(
-      `trackPage${currentPage}`,
-    )[0].style.backgroundColor = 'rgb(198, 199, 201)';
+      `${gridID}trackPage${currentPage}`,
+    )[0].style.backgroundColor = '#ebebeb';
     document.getElementsByClassName(
-      `trackPage${page}`,
+      `${gridID}trackPage${page}`,
     )[0].style.backgroundColor = 'white';
     window.scrollTo(
       0,
-      document.getElementsByClassName(`trackGrid`)[0].offsetTop,
+      document.getElementsByClassName(`${gridID}trackGrid`)[0].offsetTop,
     );
   };
 
@@ -70,9 +72,24 @@ const TrackGrid = ({ tracks, previewSong }) => {
     }
   };
 
+  const pageButton = (page, text) => {
+    return (
+      <Button
+        key={page}
+        className={`${gridID}trackPage${page}`}
+        onClick={() => {
+          pageChange(page);
+          changeActivePageColor(page);
+        }}
+      >
+        {text}
+      </Button>
+    );
+  };
+
   return (
     <>
-      <Grid container spacing={1} className="trackGrid">
+      <Grid container spacing={1} className={`${gridID}trackGrid`}>
         {displayTracks?.map((track) => (
           <Paper key={track?.id} className={'trackPaper'}>
             <Grid container spacing={1}>
@@ -136,18 +153,17 @@ const TrackGrid = ({ tracks, previewSong }) => {
             aria-label="outlined primary button group"
             className="trackGridPages"
           >
-            {trackPageAmount?.map((page) => (
-              <Button
-                key={page}
-                className={`trackPage${page}`}
-                onClick={() => {
-                  pageChange(page);
-                  changeActivePageColor(page);
-                }}
-              >
-                {page}
-              </Button>
-            ))}
+            {trackPageAmount?.map((page) => {
+              return (page < currentPage + trackPagesToShow / 2 &&
+                page > currentPage - trackPagesToShow / 2) ||
+                page === trackPageAmount.length - 1 ||
+                page === 0
+                ? pageButton(page, page + 1)
+                : page === trackPageAmount.length - 2 ||
+                  (currentPage > 0 && page < currentPage && page === 1)
+                ? pageButton(page, '...')
+                : null;
+            })}
           </ButtonGroup>
         </Grid>
       ) : (
