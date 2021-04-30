@@ -71,6 +71,8 @@ code {
 
 .accessButton {
   @include spacing(1);
+  background: white;
+  border: 1px $main-border;
 }
 
 .input {
@@ -94,6 +96,17 @@ code {
 .cardGrid,
 .topArtistCardGrid {
   flex-grow: 1;
+}
+
+.recommendationInfo {
+  @include spacing(1);
+  min-width: 150px;
+  width: 300px;
+  border: 1px $main-border;
+}
+
+.MuiAccordion-root.Mui-expanded:first-child {
+  width: 100%;
 }
 
 /* ----- TRACK CARD/GRID ----- */

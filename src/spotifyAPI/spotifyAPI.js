@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const baseUrl = 'https://api.spotify.com/v1/';
+const timeoutAPI = 5;
 let userSavedTracks = [];
 
 const getUserCountryCode = () => {
@@ -29,6 +30,13 @@ const getArtistTopTracks = async (id) => {
   }
 };
 
+const getAudioFeaturesSeveralTracks = (ids) => {
+  const request = axios.get(`${baseUrl}audio-features`, {
+    params: { ids: ids },
+  });
+  return request.then((response) => response.data);
+};
+
 const getAvailableGenreSeeds = () => {
   const request = axios.get(`${baseUrl}recommendations/available-genre-seeds`);
   return request.then((response) => response.data);
@@ -39,16 +47,21 @@ const getPlaylist = (playlistId) => {
   return request.then((response) => response.data);
 };
 
-const getUserSavedTracks = (nextUrl) => {
+const getUserSavedTracks = (nextUrl, maxGetAmount) => {
   const limit = 50;
-  const url = !nextUrl
-    ? `${baseUrl}me/tracks?offset=0&limit=${limit}`
-    : nextUrl;
-  !nextUrl ? (userSavedTracks = []) : null;
-  axios.get(url).then((response) => {
-    userSavedTracks.push(response.data.items);
-    !response.data.next ? null : getUserSavedTracks(response.data.next);
-  });
+  const url =
+    nextUrl === '' ? `${baseUrl}me/tracks?offset=0&limit=${limit}` : nextUrl;
+  nextUrl === '' ? (userSavedTracks = []) : null;
+  setTimeout(
+    () =>
+      axios.get(url).then((response) => {
+        userSavedTracks.push(response.data.items);
+        response.data.next && userSavedTracks.length < maxGetAmount
+          ? getUserSavedTracks(response.data.next, maxGetAmount)
+          : null;
+      }),
+    timeoutAPI,
+  );
   return userSavedTracks;
 };
 
@@ -62,13 +75,21 @@ const getUserProfile = () => {
   return request.then((response) => response.data);
 };
 
-const getUserRecommendations = async (seedArtists, seedGenres, limit) => {
+const getUserRecommendations = async (
+  seedArtists,
+  seedGenres,
+  seedDanceability,
+  seedEnergy,
+  limit,
+) => {
   try {
     const market = await getUserCountryCode();
     const request = axios.get(`${baseUrl}recommendations`, {
       params: {
         seed_artists: seedArtists,
         seed_genres: seedGenres,
+        target_danceability: seedDanceability,
+        target_energy: seedEnergy,
         limit: limit,
         market: market !== null ? market : 'ES',
       },
@@ -89,6 +110,7 @@ const getSearchResults = (search, type, limit) => {
 export default {
   getAlbumTracks,
   getArtistTopTracks,
+  getAudioFeaturesSeveralTracks,
   getAvailableGenreSeeds,
   getPlaylist,
   getUserSavedTracks,
