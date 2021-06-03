@@ -26,6 +26,16 @@ const UserInfo = ({ token }) => {
       .catch((error) => console.log(error));
   }, []);
 
+  const handleKeyPress = (event) => {
+    if (
+      event.charCode != 8 &&
+      event.charCode != 0 &&
+      (event.charCode < 48 || event.charCode > 57)
+    ) {
+      event.preventDefault();
+    }
+  };
+
   const handleInputChange = (event) => {
     setValue(event.target.value === '' ? '' : Number(event.target.value));
   };
@@ -47,6 +57,7 @@ const UserInfo = ({ token }) => {
             className={'input'}
             value={value}
             margin="dense"
+            onKeyPress={handleKeyPress}
             onChange={handleInputChange}
             onBlur={handleBlur}
             inputProps={{
