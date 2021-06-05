@@ -28,7 +28,7 @@ const UserInfo = ({ token }) => {
 
   const handleBeforeInput = (event) => {
     const value = event.nativeEvent.data || event.data;
-    !/^\d$/.exec(value) ? event.preventDefault() : null;
+    !/^\d*$/.exec(value) ? event.preventDefault() : null;
   };
 
   const handleInputChange = (event) => {
