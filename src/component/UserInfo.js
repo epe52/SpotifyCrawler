@@ -28,11 +28,13 @@ const UserInfo = ({ token }) => {
 
   const handleBeforeInput = (event) => {
     const value = event.nativeEvent.data || event.data;
-    !/^\d*$/.exec(value) ? event.preventDefault() : null;
+    if (!/^\d*$/.exec(value)) {
+      event.preventDefault();
+    }
   };
 
   const handleInputChange = (event) => {
-    setValue(event.target.value === '' ? '' : Number(event.target.value));
+    setValue(event.target.value ? event.target.value : '');
   };
 
   const handleBlur = () => {
