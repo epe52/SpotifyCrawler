@@ -27,8 +27,7 @@ const UserInfo = ({ token }) => {
   }, []);
 
   const handleBeforeInput = (event) => {
-    const value = event.nativeEvent.data || event.data;
-    if (!/^\d*$/.exec(value)) {
+    if (event.data && !/^\d*$/.test(event.data)) {
       event.preventDefault();
     }
   };
