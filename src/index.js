@@ -96,7 +96,7 @@ const App = () => {
   return (
     <>
       <StylesProvider injectFirst>
-        {loading ? (
+        {loading && (
           <Container maxWidth="md">
             <h1>Choose authorization</h1>
             <div>
@@ -118,8 +118,6 @@ const App = () => {
               </Button>
             </div>
           </Container>
-        ) : (
-          ''
         )}
         {!loading && (
           <Container maxWidth="md">
@@ -147,7 +145,7 @@ const App = () => {
               <li>Get recommendations based on user top artists.</li>
               <li>Get user top artists and play their top tracks.</li>
             </ul>
-            {userToken !== '' ? <UserInfo token={userToken} /> : ''}
+            {userToken !== '' && <UserInfo token={userToken} />}
             <SearchFromSpotify />
           </Container>
         )}

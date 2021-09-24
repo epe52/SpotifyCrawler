@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import TrackGrid from '../component/TrackGrid';
 import spotifyAPI from '../spotifyAPI/spotifyAPI';
 import Button from '@material-ui/core/Button';
+import _ from 'lodash';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -11,156 +12,74 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const UserRecommendations = ({ userTopArtists }) => {
   const [showTracks, setShowTracks] = useState(false);
-  const [seedInfo, setSeedInfo] = useState({});
+  const [userGenres, setUserGenres] = useState({});
+  const [userSavedTracks, setUserSavedTracks] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
-  const [genresUsedAsSeed, setGenresUsedAsSeed] = useState([]);
-  const [artistsUsedAsSeed, setArtistsUsedAsSeed] = useState([]);
+  const [genresUsedAsSeed, setGenresUsedAsSeed] = useState('');
+  const [artistsUsedAsSeed, setArtistsUsedAsSeed] = useState('');
   const [availableGenreSeeds, setAvailableGenreSeeds] = useState([]);
   const previewSong = new Audio();
-  const recommendationLimit = 50;
   const userSavedTracksLimit = 2000;
+  const recommendationLimit = 50;
   const artistSeeds = 4; // Max 5 total seeds
   const genreSeeds = 1;
-  const [userSavedTracks, setUserSavedTracks] = useState([]);
-  const [userSavedAvgEnergy, setUserSavedAvgEnergy] = useState(0.5);
-  const [userSavedDanceability, setUserSavedDanceability] = useState(0.5);
+  const [seedEnergy, setSeedEnergy] = useState(0.5);
+  const [seedDanceability, setSeedDanceability] = useState(0.5);
   const [tracksForFeatureAverages, setTracksForFeatureAverages] = useState(0);
-  const [savedFormat, setSavedFormat] = useState(false);
 
   useEffect(() => {
-    const seedData = {
-      artists: [],
-      genres: [],
-      tracks: [],
-    };
-    userTopArtists?.map((artist) => {
-      seedData.artists.push(artist?.id);
-      artist?.genres?.map((genre) => {
-        seedData.genres.indexOf(genre) === -1
-          ? seedData.genres.push(genre)
-          : null;
-      });
-    });
-    setSeedInfo(seedData);
-    // Only after token has been set
-    if (userTopArtists != undefined) {
+    if (!_.isEmpty(userTopArtists)) {
       setUserSavedTracks(
         spotifyAPI.getUserSavedTracks('', userSavedTracksLimit),
       );
-      spotifyAPI.getAvailableGenreSeeds().then((response) => {
-        setAvailableGenreSeeds(response);
+      setUserGenres({
+        genres: _.uniq(_.concat(..._.map(userTopArtists, 'genres'))),
       });
+      spotifyAPI
+        .getAvailableGenreSeeds()
+        .then((response) => {
+          setAvailableGenreSeeds(response);
+        })
+        .catch((error) => console.log(error));
     }
   }, [userTopArtists]);
 
-  const formatUserSavedTracks = () => {
-    const tempAllUserTracks = [];
-    userSavedTracks?.map((trackArray) =>
-      trackArray?.map((trackDetails) =>
-        tempAllUserTracks.push(trackDetails?.track),
-      ),
-    );
-    setUserSavedTracks(tempAllUserTracks);
-    tempAllUserTracks.length > 0
-      ? getSavedTracksAudioFeatures(tempAllUserTracks)
-      : null;
-    setSavedFormat(true);
+  const getSavedTracksAudioFeatures = (callback) => {
+    const tracksToUse = (100 * Math.random()) << 0;
+    const allUserSavedTracks = _.concat(...userSavedTracks);
+    const savedTracksToUse = _.sampleSize(allUserSavedTracks, tracksToUse);
+    const savedTrackIdsToUse = _.join(_.map(savedTracksToUse, 'track.id'));
+
+    setTracksForFeatureAverages(tracksToUse);
+
+    spotifyAPI
+      .getAudioFeaturesSeveralTracks(savedTrackIdsToUse)
+      .then((response) => {
+        setSeedEnergy(_.meanBy(response.audio_features, 'energy'));
+        setSeedDanceability(_.meanBy(response.audio_features, 'danceability'));
+        callback();
+      })
+      .catch((error) => console.log(error));
   };
 
-  const getSavedTracksAudioFeatures = (savedTracks) => {
-    const allIDs = [];
-    const tracks = (100 * Math.random()) << 0;
-    setTracksForFeatureAverages(tracks);
-
-    const startInd =
-      savedTracks.length > tracks
-        ? ((savedTracks.length - tracks) * Math.random()) << 0
-        : -1;
-
-    if (startInd !== -1) {
-      for (let i = startInd; i < startInd + tracks; i++) {
-        allIDs.push(savedTracks[i].id);
-      }
-    } else {
-      savedTracks.map((track) => allIDs.push(track.id));
-    }
-
-    const ids = allIDs.join(',');
-    spotifyAPI.getAudioFeaturesSeveralTracks(ids).then((response) => {
-      let totalEnergy = 0,
-        totalDanceability = 0,
-        hadFeatures = 0;
-      response?.audio_features?.map((track) => {
-        if (track?.energy > 0) {
-          totalEnergy += track.energy;
-          totalDanceability += track.danceability;
-          hadFeatures++;
-        }
-      });
-      const avgEnergy = totalEnergy / hadFeatures;
-      const avgDanceability = totalDanceability / hadFeatures;
-      setUserSavedAvgEnergy(avgEnergy);
-      setUserSavedDanceability(avgDanceability);
-      getRecommendations(avgEnergy, avgDanceability);
-    });
-  };
-
-  const getRecommendations = (avgEnergy, avgDanceability) => {
-    const viableUserGenres = [];
-    seedInfo?.genres?.map((item) =>
-      availableGenreSeeds.genres.find((genre) => genre === item)
-        ? viableUserGenres.push(item)
-        : null,
+  const getRecommendations = () => {
+    const viableUserGenres = _.intersection(
+      userGenres.genres,
+      availableGenreSeeds.genres,
     );
+    const seedArtist = _.sampleSize(userTopArtists, artistSeeds);
+    const seedArtistIds = _.join(_.map(seedArtist, 'id'));
+    const seedGenres = _.join(_.sampleSize(viableUserGenres, genreSeeds), ',');
 
-    // Random start index
-    const artistStartInd =
-      seedInfo?.artists.length > artistSeeds
-        ? ((seedInfo?.artists.length - artistSeeds) * Math.random()) << 0
-        : -1;
-    const genreStartInd =
-      viableUserGenres.length > genreSeeds
-        ? ((viableUserGenres.length - genreSeeds) * Math.random()) << 0
-        : -1;
-
-    // Starting from selected random index
-    const seedArtists =
-      artistStartInd !== -1
-        ? seedInfo?.artists
-            .slice(artistStartInd, artistStartInd + artistSeeds)
-            .join(',')
-        : seedInfo?.artists.join(',');
-    const seedGenres =
-      genreStartInd !== -1
-        ? viableUserGenres
-            .slice(genreStartInd, genreStartInd + genreSeeds)
-            .join(',')
-        : viableUserGenres.join(',');
-
-    // Info for recommendation seed sources
-    const seedArtistIds =
-      artistStartInd !== -1
-        ? seedInfo?.artists.slice(artistStartInd, artistStartInd + artistSeeds)
-        : seedInfo?.artists;
-    const seedArtistNames = [];
-    userTopArtists?.map((artist) => {
-      seedArtistIds.find((id) => id === artist?.id)
-        ? seedArtistNames.push(artist?.name)
-        : null;
-    });
-    setArtistsUsedAsSeed(seedArtistNames);
-    setGenresUsedAsSeed(
-      genreStartInd !== -1
-        ? viableUserGenres.slice(genreStartInd, genreStartInd + genreSeeds)
-        : viableUserGenres,
-    );
+    setArtistsUsedAsSeed(_.join(_.map(seedArtist, 'name')), ',');
+    setGenresUsedAsSeed(seedGenres);
 
     spotifyAPI
       .getUserRecommendations(
-        seedArtists,
+        seedArtistIds,
         seedGenres,
-        avgEnergy,
-        avgDanceability,
+        seedEnergy,
+        seedDanceability,
         recommendationLimit,
       )
       .then((response) => {
@@ -177,17 +96,13 @@ const UserRecommendations = ({ userTopArtists }) => {
         className="accessButton"
         onClick={() => {
           setShowTracks(!showTracks);
-          !savedFormat
-            ? formatUserSavedTracks()
-            : userSavedTracks.length > 0
-            ? getSavedTracksAudioFeatures(userSavedTracks)
-            : getRecommendations(userSavedAvgEnergy, userSavedDanceability);
+          getSavedTracksAudioFeatures(getRecommendations);
           previewSong.src = '';
         }}
       >
         Get song recommendations
       </Button>
-      {recommendations.tracks ? (
+      {recommendations.tracks && (
         <div>
           <Button
             variant="outlined"
@@ -199,7 +114,7 @@ const UserRecommendations = ({ userTopArtists }) => {
           >
             {showTracks ? 'Hide' : 'Show'} recommendations
           </Button>
-          {showTracks ? (
+          {showTracks && (
             <div>
               <Accordion className="recommendationInfo">
                 <AccordionSummary
@@ -215,10 +130,12 @@ const UserRecommendations = ({ userTopArtists }) => {
                   <Typography variant="body1" gutterBottom>
                     Seed artists and genres for recommendations are randomly
                     selected based on your top artists. <br /> <br /> Artists
-                    used as seed for recommendation:{' '}
-                    {artistsUsedAsSeed.join(', ')} <br /> <br />
-                    Genres used as seed for recommendation:{' '}
-                    {genresUsedAsSeed.join(', ')} <br /> <br />
+                    used as seed for recommendation: {artistsUsedAsSeed} <br />{' '}
+                    <br />
+                    Genres used as seed for recommendation: {
+                      genresUsedAsSeed
+                    }{' '}
+                    <br /> <br />
                     Danceability and energy average values from your saved
                     tracks that are used as target values for recommendations.
                     Range of 1 to 100 random tracks are selected from your saved
@@ -228,9 +145,11 @@ const UserRecommendations = ({ userTopArtists }) => {
                     will be used.
                     <br />
                     Selected track amount: {tracksForFeatureAverages} <br />
-                    Track danceability average:{' '}
-                    {userSavedDanceability.toFixed(2)} <br />
-                    Track energy average: {userSavedAvgEnergy.toFixed(2)} <br />
+                    Track danceability average: {seedDanceability.toFixed(
+                      2,
+                    )}{' '}
+                    <br />
+                    Track energy average: {seedEnergy.toFixed(2)} <br />
                     <a
                       target="_blank"
                       rel="noreferrer"
@@ -247,12 +166,8 @@ const UserRecommendations = ({ userTopArtists }) => {
                 gridID="UserRecommendations"
               />
             </div>
-          ) : (
-            ''
           )}
         </div>
-      ) : (
-        ''
       )}
     </>
   );

@@ -6,12 +6,13 @@ import UserRecommendations from '../component/UserRecommendations';
 import UserTopArtists from '../component/UserTopArtists';
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
+import _ from 'lodash';
 
 const UserInfo = ({ token }) => {
   const showLimit = 20;
   const artistLimit = 50;
   const [userProfile, setUserProfile] = useState([]);
-  const [userTopArtists, setUserTopArtists] = useState([]);
+  const [userTopArtists, setUserTopArtists] = useState({});
   const [value, setValue] = useState(6);
 
   useEffect(() => {
@@ -44,7 +45,9 @@ const UserInfo = ({ token }) => {
     <>
       <h2>Hello {userProfile?.display_name}!</h2>
       <h3>{'Your song recommendations'}</h3>
-      <UserRecommendations userTopArtists={userTopArtists?.items} />
+      {!_.isEmpty(userTopArtists) && (
+        <UserRecommendations userTopArtists={userTopArtists.items} />
+      )}
       <h3>{'Your top artists'}</h3>
       <Grid container spacing={1} direction="row" alignItems="flex-start">
         <Grid item>Artists to show:</Grid>
