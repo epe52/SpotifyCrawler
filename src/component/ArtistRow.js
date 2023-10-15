@@ -25,7 +25,7 @@ const ArtistRow = ({ artist }) => {
       const resp = await spotifyAPI.getArtistTopTracks(artistId);
       setTopTracks(resp);
     } catch (error) {
-      console.log('error', error);
+      console.debug('Error in searching artist top tracks', error);
     }
   };
 

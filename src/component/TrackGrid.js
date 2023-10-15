@@ -68,7 +68,7 @@ const TrackGrid = ({ tracks, previewSong, gridID }) => {
   const playPreview = (url) => {
     if (previewSong.paused || previewSong.src !== url) {
       previewSong.src = url;
-      previewSong.play().catch((error) => console.log(error));
+      previewSong.play().catch((error) => console.debug(error));
     } else {
       stopMusic();
     }

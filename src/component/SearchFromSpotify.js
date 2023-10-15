@@ -36,7 +36,7 @@ const SearchFromSpotify = () => {
       );
       resp !== undefined ? setSearchResult(resp) : null;
     } catch (error) {
-      console.log('error', error);
+      console.debug('Error searching results from Spotify', error);
     }
   };
 
@@ -46,7 +46,7 @@ const SearchFromSpotify = () => {
 
   const searchButtonClicked = (e) => {
     e.preventDefault();
-    search?.length > 1 ? searchFromSpotify() : console.log('No search query');
+    search?.length > 1 ? searchFromSpotify() : console.debug('No search query');
   };
 
   return (

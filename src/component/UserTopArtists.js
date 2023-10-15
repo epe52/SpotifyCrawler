@@ -25,7 +25,7 @@ const UserTopArtists = ({ userTopArtists }) => {
         setTopTracks(response);
         setShowTracks(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.debug(error));
   };
 
   const scrollToTracks = () => {

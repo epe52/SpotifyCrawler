@@ -19,11 +19,11 @@ const UserInfo = ({ token }) => {
     spotifyAPI
       .getUserProfile()
       .then((response) => setUserProfile(response))
-      .catch((error) => console.log(error));
+      .catch((error) => console.debug(error));
     spotifyAPI
       .getUserTopArtists(artistLimit)
       .then((response) => setUserTopArtists(response))
-      .catch((error) => console.log(error));
+      .catch((error) => console.debug(error));
   }, []);
 
   const handleBeforeInput = (event) => {

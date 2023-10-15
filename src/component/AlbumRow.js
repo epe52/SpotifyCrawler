@@ -25,7 +25,7 @@ const AlbumRow = ({ album }) => {
     spotifyAPI
       .getAlbumTracks(album?.id, offset, limit)
       .then((response) => setAlbumTracks(response))
-      .catch((error) => console.log(error));
+      .catch((error) => console.debug(error));
   };
 
   return (

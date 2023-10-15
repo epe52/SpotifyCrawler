@@ -23,7 +23,7 @@ const PlaylistRow = ({ playlist }) => {
     spotifyAPI
       .getPlaylist(playlist?.id)
       .then((response) => setPlaylistDetails(response))
-      .catch((error) => console.log(error));
+      .catch((error) => console.debug(error));
   }, []);
 
   return (

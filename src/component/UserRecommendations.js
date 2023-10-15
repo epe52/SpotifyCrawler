@@ -42,7 +42,7 @@ const UserRecommendations = ({ userTopArtists }) => {
         .then((response) => {
           setAvailableGenreSeeds(response);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.debug(error));
     }
   }, [userTopArtists]);
 
@@ -61,7 +61,7 @@ const UserRecommendations = ({ userTopArtists }) => {
         setSeedDanceability(_.meanBy(response.audio_features, 'danceability'));
         callback();
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.debug(error));
   };
 
   const getRecommendations = () => {
@@ -88,7 +88,7 @@ const UserRecommendations = ({ userTopArtists }) => {
         setRecommendations(response);
         setShowTracks(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.debug(error));
   };
 
   return (

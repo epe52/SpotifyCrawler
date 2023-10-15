@@ -18,7 +18,7 @@ const AlbumTrackTable = ({ rows }) => {
     try {
       audioEl?.paused ? audioEl?.play() : audioEl?.pause();
     } catch (error) {
-      console.log('Error in audio playback', error);
+      console.debug('Error in audio playback', error);
     }
   };
 
