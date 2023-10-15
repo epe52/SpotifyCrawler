@@ -1,7 +1,7 @@
-import React from 'react';
 import AlbumTable from '../component/AlbumTable';
 import ArtistTable from '../component/ArtistTable';
 import PlaylistTable from '../component/PlaylistTable';
+import React from 'react';
 import TrackTable from '../component/TrackTable';
 
 const SearchResults = ({ results, searchType, searchTypes }) => {

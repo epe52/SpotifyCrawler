@@ -1,14 +1,16 @@
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+  Typography,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from 'react';
-import { useState, useEffect } from 'react';
 import TrackGrid from '../component/TrackGrid';
-import spotifyAPI from '../spotifyAPI/spotifyAPI';
-import Button from '@material-ui/core/Button';
 import _ from 'lodash';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import spotifyAPI from '../spotifyAPI/spotifyAPI';
 
 const UserRecommendations = ({ userTopArtists }) => {
   const [showTracks, setShowTracks] = useState(false);

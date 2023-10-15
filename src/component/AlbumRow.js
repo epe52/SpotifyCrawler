@@ -1,16 +1,18 @@
-import React from 'react';
-import { useState } from 'react';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import { StylesProvider } from '@material-ui/core/styles';
-import spotifyAPI from '../spotifyAPI/spotifyAPI';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Collapse from '@material-ui/core/Collapse';
-import Box from '@material-ui/core/Box';
+import {
+  Avatar,
+  Box,
+  Collapse,
+  IconButton,
+  TableCell,
+  TableRow,
+} from '@mui/material';
 import AlbumTrackTable from '../component/AlbumTrackTable';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import React from 'react';
+import { StyledEngineProvider } from '@mui/material/styles';
+import spotifyAPI from '../spotifyAPI/spotifyAPI';
+import { useState } from 'react';
 
 const AlbumRow = ({ album }) => {
   const columns = 7;
@@ -28,7 +30,7 @@ const AlbumRow = ({ album }) => {
 
   return (
     <React.Fragment key={album?.id}>
-      <StylesProvider>
+      <StyledEngineProvider>
         <TableRow key={album?.id}>
           <TableCell className={'cell'}>
             <IconButton
@@ -67,7 +69,7 @@ const AlbumRow = ({ album }) => {
             </Collapse>
           </TableCell>
         </TableRow>
-      </StylesProvider>
+      </StyledEngineProvider>
     </React.Fragment>
   );
 };

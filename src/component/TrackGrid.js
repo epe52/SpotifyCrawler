@@ -1,15 +1,17 @@
-import React from 'react';
+import {
+  Avatar,
+  Button,
+  ButtonGroup,
+  Grid,
+  IconButton,
+  Paper,
+  Typography,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
-import Paper from '@material-ui/core/Paper';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@mui/icons-material/Add';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
+import React from 'react';
 
 const TrackGrid = ({ tracks, previewSong, gridID }) => {
   const [displayTracks, setDisplayTracks] = useState([]);

@@ -1,14 +1,14 @@
+import { useEffect, useState } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { StylesProvider } from '@material-ui/core/styles';
-import { DataGrid } from '@material-ui/data-grid';
+import { StyledEngineProvider } from '@mui/material/styles';
 
 const PlaylistTrackTable = ({ items }) => {
   const [rows, setRows] = useState([]);
   const columnsAmount = 5;
   const tH = columnsAmount * 85;
-  const tW = document.getElementsByClassName('MuiTableBody-root')[0]
-    .offsetWidth;
+  const tW =
+    document.getElementsByClassName('MuiTableBody-root')[0].offsetWidth;
   const columnW = tW / columnsAmount;
 
   const columns = [
@@ -27,17 +27,17 @@ const PlaylistTrackTable = ({ items }) => {
   useEffect(() => {
     setRows(
       items?.tracks?.items?.map((item, i) => ({
+        added_at: new Date(item?.added_at).toLocaleDateString(),
+        album: item?.track?.album?.name,
+        artists: item?.track?.artists?.map((artist) => artist.name).join(', '),
         id: i,
         name: item?.track?.name,
-        artists: item?.track?.artists?.map((artist) => artist.name).join(', '),
-        album: item?.track?.album?.name,
-        added_at: new Date(item?.added_at).toLocaleDateString(),
       })),
     );
   }, []);
 
   return (
-    <StylesProvider>
+    <StyledEngineProvider>
       <div style={{ height: tH, tW }}>
         <DataGrid
           rows={rows}
@@ -48,7 +48,7 @@ const PlaylistTrackTable = ({ items }) => {
           onRowSelected={null}
         />
       </div>
-    </StylesProvider>
+    </StyledEngineProvider>
   );
 };
 

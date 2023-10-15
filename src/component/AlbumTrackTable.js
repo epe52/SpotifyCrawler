@@ -1,16 +1,18 @@
+import {
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import React from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { StylesProvider } from '@material-ui/core/styles';
+import { StyledEngineProvider } from '@mui/material/styles';
 
-const AlbumTrackTable = ({ items }) => {
+const AlbumTrackTable = ({ rows }) => {
   const playAudio = (elemClassName) => () => {
     const audioEl = document.getElementsByClassName(elemClassName)[0];
     try {
@@ -21,7 +23,7 @@ const AlbumTrackTable = ({ items }) => {
   };
 
   return (
-    <StylesProvider>
+    <StyledEngineProvider>
       <TableContainer component={Paper}>
         <Table className={'table'} aria-label="track-table">
           <TableHead>
@@ -32,7 +34,7 @@ const AlbumTrackTable = ({ items }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {items?.map((track) => (
+            {rows?.map((track) => (
               <TableRow key={track?.id} className={'row'}>
                 <TableCell className={'cell'}>{track?.track_number}</TableCell>
                 <TableCell className={'cell'}>{track?.name}</TableCell>
@@ -54,7 +56,7 @@ const AlbumTrackTable = ({ items }) => {
           </TableBody>
         </Table>
       </TableContainer>
-    </StylesProvider>
+    </StyledEngineProvider>
   );
 };
 

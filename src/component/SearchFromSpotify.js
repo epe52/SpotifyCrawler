@@ -1,16 +1,18 @@
+import {
+  FormControl,
+  IconButton,
+  InputBase,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+} from '@mui/material';
 import React from 'react';
-import { useState } from 'react';
-import spotifyAPI from '../spotifyAPI/spotifyAPI';
+import SearchIcon from '@mui/icons-material/Search';
 import SearchResults from '../component/SearchResults';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import { StylesProvider } from '@material-ui/core/styles';
+import { StyledEngineProvider } from '@mui/material/styles';
+import spotifyAPI from '../spotifyAPI/spotifyAPI';
+import { useState } from 'react';
 
 const searchTypes = {
   Album: 'album',
@@ -48,12 +50,12 @@ const SearchFromSpotify = () => {
   };
 
   return (
-    <StylesProvider>
+    <StyledEngineProvider>
       <div>
         <h2>Search from Spotify</h2>
         <div>
           <div>
-            <StylesProvider>
+            <StyledEngineProvider>
               <FormControl className={'formControl'}>
                 <InputLabel id="type-select-label">Search type</InputLabel>
                 <Select
@@ -69,9 +71,9 @@ const SearchFromSpotify = () => {
                   ))}
                 </Select>
               </FormControl>
-            </StylesProvider>
+            </StyledEngineProvider>
             <div>
-              <StylesProvider>
+              <StyledEngineProvider>
                 <Paper component="form" className={'paper'}>
                   <InputBase
                     className={'input'}
@@ -87,7 +89,7 @@ const SearchFromSpotify = () => {
                     <SearchIcon />
                   </IconButton>
                 </Paper>
-              </StylesProvider>
+              </StyledEngineProvider>
             </div>
           </div>
         </div>
@@ -97,7 +99,7 @@ const SearchFromSpotify = () => {
           searchTypes={searchTypes}
         />
       </div>
-    </StylesProvider>
+    </StyledEngineProvider>
   );
 };
 

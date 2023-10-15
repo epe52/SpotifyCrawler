@@ -1,12 +1,11 @@
+import { Grid, Input } from '@mui/material';
+import { useEffect, useState } from 'react';
 import React from 'react';
-import { useState, useEffect } from 'react';
-import spotifyAPI from '../spotifyAPI/spotifyAPI';
-import axios from 'axios';
 import UserRecommendations from '../component/UserRecommendations';
 import UserTopArtists from '../component/UserTopArtists';
-import Grid from '@material-ui/core/Grid';
-import Input from '@material-ui/core/Input';
 import _ from 'lodash';
+import axios from 'axios';
+import spotifyAPI from '../spotifyAPI/spotifyAPI';
 
 const UserInfo = ({ token }) => {
   const showLimit = 20;
@@ -60,11 +59,11 @@ const UserInfo = ({ token }) => {
             onChange={handleInputChange}
             onBlur={handleBlur}
             inputProps={{
-              step: 1,
-              min: 1,
-              max: 20,
-              type: 'number',
               'aria-labelledby': 'input-slider',
+              max: 20,
+              min: 1,
+              step: 1,
+              type: 'number',
             }}
           />
         </Grid>

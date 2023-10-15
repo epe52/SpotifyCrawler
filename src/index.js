@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import './styles/main.scss';
+import { Button, Container } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import SearchFromSpotify from './component/SearchFromSpotify';
+import { StyledEngineProvider } from '@mui/material/styles';
 import UserInfo from './component/UserInfo';
 import axios from 'axios';
-import Container from '@material-ui/core/Container';
-import Button from '@material-ui/core/Button';
-import './styles/main.scss';
-import { StylesProvider } from '@material-ui/core/styles';
+import { createRoot } from 'react-dom/client';
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -68,17 +67,17 @@ const App = () => {
   const publicAccess = () => {
     setLoading(true);
     axios({
-      method: 'post',
-      url: 'https://accounts.spotify.com/api/token',
+      auth: {
+        password: clientSecret, // User Secret
+        username: clientId, // User ID
+      },
       data: 'grant_type=client_credentials',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      auth: {
-        username: clientId, // User ID
-        password: clientSecret, // User Secret
-      },
+      method: 'post',
+      url: 'https://accounts.spotify.com/api/token',
     })
       .then((response) => {
         console.log('Got the token');
@@ -95,7 +94,7 @@ const App = () => {
 
   return (
     <>
-      <StylesProvider injectFirst>
+      <StyledEngineProvider injectFirst>
         {loading && (
           <Container maxWidth="md">
             <h1>Choose authorization</h1>
@@ -149,9 +148,10 @@ const App = () => {
             <SearchFromSpotify />
           </Container>
         )}
-      </StylesProvider>
+      </StyledEngineProvider>
     </>
   );
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
+root.render(<App />);

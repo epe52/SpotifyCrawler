@@ -1,26 +1,28 @@
+import {
+  Avatar,
+  Box,
+  Collapse,
+  IconButton,
+  TableCell,
+  TableRow,
+} from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import React from 'react';
-import { useState } from 'react';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Avatar from '@material-ui/core/Avatar';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Box from '@material-ui/core/Box';
-import spotifyAPI from '../spotifyAPI/spotifyAPI';
+import { StyledEngineProvider } from '@mui/material/styles';
 import TrackTable from '../component/TrackTable';
-import { StylesProvider } from '@material-ui/core/styles';
+import spotifyAPI from '../spotifyAPI/spotifyAPI';
+import { useState } from 'react';
 
 const ArtistRow = ({ artist }) => {
   const columns = 5;
-  const id = artist?.id;
+  const artistId = artist?.id;
   const [open, setOpen] = useState(false);
   const [topTracks, setTopTracks] = useState([]);
 
   const searchArtistTopTracks = async () => {
     try {
-      const resp = await spotifyAPI.getArtistTopTracks(id);
+      const resp = await spotifyAPI.getArtistTopTracks(artistId);
       setTopTracks(resp);
     } catch (error) {
       console.log('error', error);
@@ -29,7 +31,7 @@ const ArtistRow = ({ artist }) => {
 
   return (
     <React.Fragment key={artist?.id}>
-      <StylesProvider>
+      <StyledEngineProvider>
         <TableRow key={artist?.id}>
           <TableCell className={'cell'}>
             <IconButton
@@ -66,7 +68,7 @@ const ArtistRow = ({ artist }) => {
             </Collapse>
           </TableCell>
         </TableRow>
-      </StylesProvider>
+      </StyledEngineProvider>
     </React.Fragment>
   );
 };

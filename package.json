@@ -3,36 +3,39 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/data-grid": "^4.0.0-alpha.21",
-    "@material-ui/icons": "^4.11.2",
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.7.1",
-    "axios": "^0.21.1",
-    "immer": "^8.0.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-scripts": "4.0.2",
-    "web-vitals": "^1.1.0"
+    "@mui/material": "^5.14.13",
+    "@mui/system": "^5.14.13",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.13",
+    "@mui/lab": "^5.0.0-alpha.148",
+    "@mui/x-data-grid": "^6.16.2",
+    "axios": "^1.5.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "@babel/core": "^7.23.2",
+    "@babel/plugin-syntax-flow": "^7.22.5",
+    "@babel/plugin-transform-react-jsx": "^7.22.15",
+    "typescript": "^5.2.2",
+    "browserslist": "^4.22.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {
     "production": [
-      ">0.2%",
+      ">0.5%",
       "not dead",
-      "not op_mini all"
+      "not IE 11",
+      "maintained node versions"
     ],
     "development": [
       "last 1 chrome version",
@@ -41,10 +44,10 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^7.20.0",
-    "eslint-plugin-react": "^7.22.0",
-    "prettier": "2.2.1",
-    "sass": "^1.32.8",
+    "eslint": "^8.51.0",
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "3.0.3",
+    "sass": "^1.69.3",
     "lodash": "^4.17.21"
   }
 }

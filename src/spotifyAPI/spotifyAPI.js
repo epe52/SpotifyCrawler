@@ -86,12 +86,12 @@ const getUserRecommendations = async (
     const market = await getUserCountryCode();
     const request = axios.get(`${baseUrl}recommendations`, {
       params: {
+        limit: limit,
+        market: market !== null ? market : 'ES',
         seed_artists: seedArtists,
         seed_genres: seedGenres,
         target_danceability: seedDanceability,
         target_energy: seedEnergy,
-        limit: limit,
-        market: market !== null ? market : 'ES',
       },
     });
     return request.then((response) => response.data);
@@ -113,9 +113,9 @@ export default {
   getAudioFeaturesSeveralTracks,
   getAvailableGenreSeeds,
   getPlaylist,
-  getUserSavedTracks,
-  getUserTopArtists,
+  getSearchResults,
   getUserProfile,
   getUserRecommendations,
-  getSearchResults,
+  getUserSavedTracks,
+  getUserTopArtists,
 };
